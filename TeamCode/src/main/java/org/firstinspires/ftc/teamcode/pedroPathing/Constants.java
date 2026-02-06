@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Constants {
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .mass(mass)
+            /*.mass(mass)
             .forwardZeroPowerAcceleration(deceleration)
             .lateralZeroPowerAcceleration(deceleration)
             /* uncomment if using dual PID
@@ -24,10 +24,10 @@ public class Constants {
             .secondaryTranslationalPIDFCoefficients()
             .secondaryHeadingPIDFCoefficients()
             .secondaryDrivePIDFCoefficients()
-           */
+
             .translationalPIDFCoefficients(new PIDFCoefficients(PIDFValues))
             .headingPIDFCoefficients(new PIDFCoefficients(PIDFvalues))
-            .centripetalScaling()
+            .centripetalScaling()*/
 
 
 
@@ -37,36 +37,38 @@ public class Constants {
             .maxPower(1)
             //change to motor names in driver hub
             .rightFrontMotorName("rf")
-            .rightRearMotorName("rr")
-            .leftRearMotorName("lr")
+            .rightRearMotorName("rb")
+            .leftRearMotorName("lb")
             .leftFrontMotorName("lf")
-            .leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .xVelocity(velocity)
-            .yVelocity(velocity)
+            .leftFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .leftRearMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .rightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .rightRearMotorDirection(DcMotorSimple.Direction.REVERSE)
+            /*.xVelocity(velocity)
+            .yVelocity(velocity)*/
 
 
             ;
 
 
     public static ThreeWheelConstants localizerConstants = new ThreeWheelConstants()
-            .forwardTicksToInches(multiplyer)
+            /*.forwardTicksToInches(multiplyer)
             .strafeTicksToInches(multiplyer)
-            .turnTicksToInches(multiplyer)
+            .turnTicksToInches(multiplyer)*/
             //change for offset from center of robot to center of deadwheels
             .leftPodY(1)
             .rightPodY(-1)
             .strafePodX(-2.5)//perpendicular deadwheel
             //change to name of motor that plugged into same port as deadwheels
-            .leftEncoder_HardwareMapName("leftFront")
-            .rightEncoder_HardwareMapName("rightRear")
-            .strafeEncoder_HardwareMapName("rightFront")
+            .leftEncoder_HardwareMapName("rb")
+            .rightEncoder_HardwareMapName("lb")
+            .strafeEncoder_HardwareMapName("rf")
             .leftEncoderDirection(Encoder.FORWARD)
             .rightEncoderDirection(Encoder.FORWARD)
             .strafeEncoderDirection(Encoder.FORWARD)
-            .xVelocity();
+           /* .xVelocity()*/
+
+    ;
 
 
 
