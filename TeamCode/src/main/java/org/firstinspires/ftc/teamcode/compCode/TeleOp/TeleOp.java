@@ -37,7 +37,7 @@ public class TeleOp extends OpMode {
     @Override
     public void loop() {
         // --- Fire command: right bumper triggers the full fire sequence ---
-        boolean currentRB = gamepad1.left_bumper;
+        boolean currentRB = gamepad1.right_bumper;
         if (currentRB && !lastRB && !firing) {
             firing = true;
             new Fire(launcher, loader, LAUNCH_VELOCITY, LOAD_TIME_MS).whenFinished(() -> firing = false).schedule();
