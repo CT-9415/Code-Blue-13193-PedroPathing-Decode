@@ -21,8 +21,8 @@ public class Constants {
 
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(9.7)
-            .forwardZeroPowerAcceleration(-45.817783908884145)
-            .lateralZeroPowerAcceleration(-69.31125641487427)
+            .forwardZeroPowerAcceleration(-45.818)
+            .lateralZeroPowerAcceleration(-69.311)
             .translationalPIDFCoefficients(new PIDFCoefficients(0.17,0,.025,.015))
             .headingPIDFCoefficients(new PIDFCoefficients(1,0,0.035,0.024))
             .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.025,0,0.00067,0,0.0025))
@@ -43,7 +43,7 @@ public class Constants {
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
             .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .xVelocity(59.76299808532234)
+            .xVelocity(59.763)
             .yVelocity(42.9145719272887385)
             ;
 
