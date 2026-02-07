@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.compCode.Autonomous;
 
+import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
 import com.pedropathing.follower.Follower;
@@ -7,44 +8,62 @@ import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
+import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.teamcode.compCode.Commands.Fire;
+import org.firstinspires.ftc.teamcode.compCode.SubsystemsAndDriveSetup.Launcher;
+import org.firstinspires.ftc.teamcode.compCode.SubsystemsAndDriveSetup.Loader;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
-
-import java.util.Timer;
 
 @Autonomous
 public class RedObeliskAuto extends OpMode {
-    private TelemetryManager panelsTelemetry; // Panels Telemetry instance
-    public Follower follower; // Pedro Pathing follower instance
-    private int pathState; // Current autonomous path state (state machine)
-    private Paths paths; // Paths defined in the Paths class
-    private Timer pathTimer, actionTimer, opmodeTimer;
+    private TelemetryManager panelsTelemetry;
+    public Follower follower;
+    private int pathState;
+    private Paths paths;
+    private Timer pathTimer;
+
+    private Launcher launcher;
+    private Loader loader;
+    private boolean fireFinished;
+
+    private static final double LAUNCH_VELOCITY = 8;
+    private static final long LOAD_TIME_MS = 1000;
 
     @Override
     public void init() {
         panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
-        pathTimer = new Timer();
-        opmodeTimer = new Timer();
-        opmodeTimer.toString();
-
 
         follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(new Pose(127.5, 114.875, Math.toRadians(0)));
+        follower.setStartingPose(new Pose(72, 8, Math.toRadians(90)));
 
-        paths = new Paths(follower); // Build paths
+        launcher = new Launcher(hardwareMap);
+        loader = new Loader(hardwareMap);
+
+        paths = new Paths(follower);
+        pathTimer = new Timer();
+        pathState = 0;
+
+        CommandScheduler.getInstance().reset();
 
         panelsTelemetry.debug("Status", "Initialized");
         panelsTelemetry.update(telemetry);
     }
 
     @Override
-    public void loop() {
-        follower.update(); // Update Pedro Pathing
-        autonomousPathUpdate(); // Update autonomous state machine
+    public void start() {
+        pathTimer.resetTimer();
+        setPathState(0);
+    }
 
-        // Log values to Panels and Driver Station
+    @Override
+    public void loop() {
+        follower.update();
+        autonomousPathUpdate();
+        CommandScheduler.getInstance().run();
+
         panelsTelemetry.debug("Path State", pathState);
         panelsTelemetry.debug("X", follower.getPose().getX());
         panelsTelemetry.debug("Y", follower.getPose().getY());
@@ -52,6 +71,10 @@ public class RedObeliskAuto extends OpMode {
         panelsTelemetry.update(telemetry);
     }
 
+    @Override
+    public void stop() {
+        CommandScheduler.getInstance().reset();
+    }
 
     public static class Paths {
         public PathChain Path1;
@@ -60,12 +83,10 @@ public class RedObeliskAuto extends OpMode {
         public Paths(Follower follower) {
             Path1 = follower.pathBuilder().addPath(
                             new BezierLine(
-                                    new Pose(127.5, 114.875),
-
+                                    new Pose(123.538, 122.780),
                                     new Pose(83.995, 83.067)
                             )
-                    ).setConstantHeadingInterpolation(Math.toRadians(45))
-
+                    ).setLinearHeadingInterpolation(Math.toRadians(37), Math.toRadians(45))
                     .build();
 
             Path2 = follower.pathBuilder().addPath(
@@ -75,41 +96,43 @@ public class RedObeliskAuto extends OpMode {
                                     new Pose(120.267, 97.044)
                             )
                     ).setLinearHeadingInterpolation(Math.toRadians(45), Math.toRadians(-90))
-
                     .build();
         }
     }
 
     public void autonomousPathUpdate() {
         switch (pathState) {
-            case 0:
-                follower.followPath(paths.Path1);
-
+            case 0: // Drive to scoring position
+                follower.followPath(paths.Path1, true);
                 setPathState(1);
                 break;
-            case 1:
-            /* You could check for
-            - Follower State: "if(!follower.isBusy()) {}"
-            - Time: "if(pathTimer.getElapsedTimeSeconds() > 1) {}"
-            - Robot Position: "if(follower.getPose().getX() > 36) {}"
-            */
-                /* This case checks the robot's position and will wait until the robot position is close (1 inch away) from the scorePose's position */
+            case 1: // Wait to arrive, then fire
                 if (!follower.isBusy()) {
-                    /* Score Preload */
-                    /* Since this is a pathChain, we can have Pedro hold the end point while we are grabbing the sample */
-                    follower.followPath(paths.Path2, true);
+                    fireFinished = false;
+                    new Fire(launcher, loader, LAUNCH_VELOCITY, LOAD_TIME_MS)
+                            .whenFinished(() -> fireFinished = true)
+                            .schedule();
                     setPathState(2);
                 }
                 break;
-
-
+            case 2: // Wait for fire to finish, then drive to next position
+                if (fireFinished) {
+                    follower.followPath(paths.Path2, true);
+                    setPathState(3);
+                }
+                break;
+            case 3: // Done
+                if (!follower.isBusy()) {
+                    setPathState(-1);
+                }
+                break;
+            default:
+                break;
         }
     }
 
     public void setPathState(int pState) {
         pathState = pState;
-        pathTimer.toString();
+        pathTimer.resetTimer();
     }
 }
-//why this not working
-
