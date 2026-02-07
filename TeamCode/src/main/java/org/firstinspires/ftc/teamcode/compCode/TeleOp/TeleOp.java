@@ -15,6 +15,8 @@ public class TeleOp extends OpMode {
     private Loader loader;
 
     private boolean lastRB = false;
+    private boolean lastLB = false;
+    private boolean launcherOn = false;
     private boolean firing = false;
 
     // Target velocity for the launcher (ticks/sec) — tune this
