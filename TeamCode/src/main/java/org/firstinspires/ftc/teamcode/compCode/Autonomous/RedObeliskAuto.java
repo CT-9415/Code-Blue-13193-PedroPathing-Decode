@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.compCode.Autonomous;
 
+import com.bylazar.telemetry.PanelsTelemetry;
+import com.bylazar.telemetry.TelemetryManager;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
@@ -14,61 +16,61 @@ import java.util.Timer;
 
 @Autonomous
 public class RedObeliskAuto extends OpMode{
-    private Follower follower;
-    private Timer pathTimer, actionTimer, opmodeTimer;
-    private int pathState;
-
-
+    private TelemetryManager panelsTelemetry; // Panels Telemetry instance
+    public Follower follower; // Pedro Pathing follower instance
+    private int pathState; // Current autonomous path state (state machine)
+    private Paths paths; // Paths defined in the Paths class
 
     @Override
     public void init() {
-        pathTimer = new Timer();
-        opmodeTimer = new Timer();
+        panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 
         follower = Constants.createFollower(hardwareMap);
+        follower.setStartingPose(new Pose(72, 8, Math.toRadians(90)));
 
+        paths = new Paths(follower); // Build paths
 
-
-
+        panelsTelemetry.debug("Status", "Initialized");
+        panelsTelemetry.update(telemetry);
     }
-
 
     @Override
     public void loop() {
-        follower.update();
-        autonomousPathUpdate();
+        follower.update(); // Update Pedro Pathing
+        pathState = autonomousPathUpdate(); // Update autonomous state machine
 
-        class Paths {
-            public PathChain Path1;
-            public PathChain Path2;
-
-
-
+        // Log values to Panels and Driver Station
+        panelsTelemetry.debug("Path State", pathState);
+        panelsTelemetry.debug("X", follower.getPose().getX());
+        panelsTelemetry.debug("Y", follower.getPose().getY());
+        panelsTelemetry.debug("Heading", follower.getPose().getHeading());
+        panelsTelemetry.update(telemetry);
     }
 
-    private void autonomousPathUpdate() {
-            public Paths(Follower follower) {
-                Path1 = follower.pathBuilder().addPath(
-                                new BezierLine(
-                                        new Pose(123.538, 122.780),
 
-                                        new Pose(83.995, 83.067)
-                                )
-                        ).setLinearHeadingInterpolation(Math.toRadians(37), Math.toRadians(45))
+    public static class Paths {
+        public PathChain Path1;
+        public PathChain Path2;
 
-                        .build();
+        public Paths(Follower follower) {
+            Path1 = follower.pathBuilder().addPath(
+                            new BezierLine(
+                                    new Pose(123.538, 122.780),
 
-                Path2 = follower.pathBuilder().addPath(
-                                new BezierCurve(
-                                        new Pose(83.995, 83.067),
-                                        new Pose(99.857, 101.228),
-                                        new Pose(120.267, 97.044)
-                                )
-                        ).setLinearHeadingInterpolation(Math.toRadians(45), Math.toRadians(-90))
+                                    new Pose(83.995, 83.067)
+                            )
+                    ).setLinearHeadingInterpolation(Math.toRadians(37), Math.toRadians(45))
 
-                        .build();
-            }
+                    .build();
+
+            Path2 = follower.pathBuilder().addPath(
+                            new BezierCurve(
+                                    new Pose(83.995, 83.067),
+                                    new Pose(99.857, 101.228),
+                                    new Pose(120.267, 97.044)
+                            )
+                    ).setLinearHeadingInterpolation(Math.toRadians(45), Math.toRadians(-90))
+
+                    .build();
         }
-        }
-    }
 }
