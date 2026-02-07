@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.compCode.Commands.Fire;
+import org.firstinspires.ftc.teamcode.compCode.Commands.ToggleFlywheel;
 import org.firstinspires.ftc.teamcode.compCode.SubsystemsAndDriveSetup.Launcher;
 import org.firstinspires.ftc.teamcode.compCode.SubsystemsAndDriveSetup.Loader;
 import org.firstinspires.ftc.teamcode.compCode.SubsystemsAndDriveSetup.MecanumDrive;
@@ -42,6 +43,13 @@ public class TeleOp extends OpMode {
             new Fire(launcher, loader, LAUNCH_VELOCITY, LOAD_TIME_MS).whenFinished(() -> firing = false).schedule();
         }
         lastRB = currentRB;
+
+        // --- Toggle Flywheel: left bumper toggles launcher ---
+        boolean currentLB = gamepad1.left_bumper;
+        if (currentLB && !lastLB) {
+            new ToggleFlywheel(launcher, LAUNCH_VELOCITY).schedule();
+        }
+        lastLB = currentLB;
 
         // --- Loader manual: hold A to run loader ---
         if (gamepad1.a) {
