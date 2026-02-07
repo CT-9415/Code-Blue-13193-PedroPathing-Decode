@@ -8,18 +8,19 @@ import org.firstinspires.ftc.teamcode.compCode.SubsystemsAndDriveSetup.MecanumDr
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp
 public class TeleOp extends OpMode {
-    MecanumDrive drive = new MecanumDrive();
-    Launcher launcher = new Launcher();
-    Loader loader = new Loader();
+    private MecanumDrive drive;
+    private Loader loader;
+
+    private Launcher launcher;
     double forward, strafe, rotate;
     boolean launcherOn = false;
     boolean lastLB = false;
 
     @Override
     public void init() {
-        drive.init(hardwareMap);
-        launcher.init(hardwareMap);
-        loader.init(hardwareMap);
+        drive = new MecanumDrive(hardwareMap);
+        launcher = new Launcher(hardwareMap);
+        loader = new Loader(hardwareMap);
 
     }
 
@@ -34,7 +35,7 @@ public class TeleOp extends OpMode {
             loader.on();
         }
         else {
-            loader.off();
+            loader.();
         }
         if(currentLB && !lastLB){
             launcherOn = !launcherOn;

@@ -14,7 +14,7 @@ public class MecanumDrive {
     double maxPower = 1;
     double maxSpeed = 1;
 
-    public void init(HardwareMap hardwareMap){
+    public MecanumDrive(HardwareMap hardwareMap){
         leftFront=hardwareMap.get(DcMotorEx.class, "lf");
         leftBack=hardwareMap.get(DcMotorEx.class, "lb");
         rightFront=hardwareMap.get(DcMotorEx.class, "rf");
