@@ -15,16 +15,14 @@ import com.qualcomm.robotcore.hardware.IMU;
 public class Launcher {
     public DcMotorEx launcher;
 
-
     public void init(HardwareMap hardwareMap){
 
         launcher = hardwareMap.get(DcMotorEx.class, ("launcher"));
-        launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        launcher.setDirection(DcMotorSimple.Direction.REVERSE);
+        launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         launcher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
-        /*PIDFCoefficients pidfCoefficients = new PIDFCoefficients(67,0,0,41);
+       /* PIDFCoefficients pidfCoefficients = new PIDFCoefficients(170,0,0,12.9);
         launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);*/
     }
 
@@ -34,12 +32,15 @@ public class Launcher {
 
 
     public void on() {
-        launcher.setVelocity(1800);
+        launcher.setPower(.8);
     }
 
     public void off() {
         launcher.setVelocity(0);
     }
 
-
+    public double getVelocity(){
+        double velocity = launcher.getVelocity();
+        return velocity;
+    }
 }
