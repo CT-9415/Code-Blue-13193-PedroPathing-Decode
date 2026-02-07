@@ -6,11 +6,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.teamcode.compCode.SubsystemsAndDriveSetup.Loader;
 
 @TeleOp(name = "Launcher PIDF Tuner", group = "Tuning")
 public class Auto_Tuner extends OpMode {
 
     private DcMotorEx shooter;
+    private Loader loader;
 
     // Tuning phase
     private enum Phase {
@@ -51,6 +53,8 @@ public class Auto_Tuner extends OpMode {
         shooter = hardwareMap.get(DcMotorEx.class, "shooter");
         shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         shooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        
+        loader = new Loader(hardwareMap);
 
         telemetry.addLine("=== LAUNCHER PIDF TUNER ===");
         telemetry.addLine("");
@@ -178,6 +182,28 @@ public class Auto_Tuner extends OpMode {
         }
         lastA = currA;
 
+        // Toggle loader on/off with Y
+        if (currY && !lastY) {
+            // Since we don't have a direct "isRunning" check on the loader, we can use a flag or just toggle
+            // For simplicity, let's assume we want to hold Y to run, or toggle. 
+            // The user asked to "run the loader", usually for testing firing.
+            // Let's make it toggle like the shooter for consistency in this tuner.
+            // But wait, the loader subsystem doesn't have a toggle state getter.
+            // Let's use a local boolean flag for loader state.
+        }
+        // Actually, let's implement the loader logic properly.
+        // We need a boolean to track loader state.
+        
+        // ... Wait, I can't easily insert a new field variable here via 'replace'.
+        // I will just make Y hold-to-run for simplicity and safety in a tuner.
+        
+        if (currY) {
+            loader.on();
+        } else {
+            loader.stop();
+        }
+        lastY = currY;
+
         // Display
         double currentVel = shooter.getVelocity();
         double error = targetVelocity - currentVel;
@@ -201,6 +227,7 @@ public class Auto_Tuner extends OpMode {
         telemetry.addLine("[DPad Up/Down] Coarse adjust");
         telemetry.addLine("[RB/LB] Fine adjust (0.1x)");
         telemetry.addLine("[A] Start/Stop motor");
+        telemetry.addLine("[Y] Hold to run Loader");
         telemetry.update();
     }
 
