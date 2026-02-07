@@ -50,7 +50,7 @@ public class Auto_Tuner extends OpMode {
 
     @Override
     public void init() {
-        shooter = hardwareMap.get(DcMotorEx.class, "shooter");
+        shooter = hardwareMap.get(DcMotorEx.class, "launcher");
         shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         shooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         

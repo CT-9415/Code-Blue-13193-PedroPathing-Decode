@@ -21,7 +21,7 @@ public class TeleOp extends OpMode {
     private boolean firing = false;
 
     // Target velocity for the launcher (ticks/sec) — tune this
-    private static final double LAUNCH_VELOCITY = 8;
+    private static final double LAUNCH_VELOCITY = 1600;
     // How long the loader runs to feed the ball (ms)
     private static final long LOAD_TIME_MS = 1000;
 
@@ -69,7 +69,7 @@ public class TeleOp extends OpMode {
 
         // --- Telemetry ---
         telemetry.addData("Launcher Velocity", launcher.getVelocity());
-        telemetry.addData("Launcher Target", launcher.getTargetVelocity());
+        telemetry.addData("Launcher Target", launcher.getGoonRate());
         telemetry.addData("Firing", firing);
 
         // Run the command scheduler

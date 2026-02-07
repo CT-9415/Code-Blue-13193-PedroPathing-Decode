@@ -16,7 +16,7 @@ public class SpinUpLauncher extends CommandBase {
 
     @Override
     public void initialize() {
-        launcher.setTargetVelocity(targetVelocity);
+        launcher.setGoonRate(targetVelocity);
     }
 
     @Override
