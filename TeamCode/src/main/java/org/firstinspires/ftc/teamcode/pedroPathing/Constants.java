@@ -1,33 +1,32 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
+import com.bylazar.configurables.annotations.Configurable;
+import com.pedropathing.control.FilteredPIDFCoefficients;
 import com.pedropathing.control.PIDFCoefficients;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.ftc.FollowerBuilder;
 import com.pedropathing.ftc.drivetrains.MecanumConstants;
 import com.pedropathing.ftc.localization.Encoder;
+import com.pedropathing.ftc.localization.constants.PinpointConstants;
 import com.pedropathing.ftc.localization.constants.ThreeWheelConstants;
 import com.pedropathing.paths.PathConstraints;
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+@Configurable
 public class Constants {
+
     public static FollowerConstants followerConstants = new FollowerConstants()
-            /*.mass(mass)
-            .forwardZeroPowerAcceleration(deceleration)
-            .lateralZeroPowerAcceleration(deceleration)
-            /* uncomment if using dual PID
-            .useSecondaryTranslationalPIDF(true)
-            .useSecondaryHeadingPIDF(true)
-            .useSecondaryDrivePIDF(true)
-
-            .secondaryTranslationalPIDFCoefficients()
-            .secondaryHeadingPIDFCoefficients()
-            .secondaryDrivePIDFCoefficients()
-
-            .translationalPIDFCoefficients(new PIDFCoefficients(PIDFValues))
-            .headingPIDFCoefficients(new PIDFCoefficients(PIDFvalues))
-            .centripetalScaling()*/
+            .mass(9.7)
+            .forwardZeroPowerAcceleration(-45.817783908884145)
+            .lateralZeroPowerAcceleration(-69.31125641487427)
+            .translationalPIDFCoefficients(new PIDFCoefficients(0.17,0,.025,.015))
+            .headingPIDFCoefficients(new PIDFCoefficients(1,0,0.035,0.024))
+            .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.025,0,0.00067,0,0.0025))
+            .centripetalScaling(0)
 
 
 
@@ -40,35 +39,16 @@ public class Constants {
             .rightRearMotorName("rb")
             .leftRearMotorName("lb")
             .leftFrontMotorName("lf")
-            .leftFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .leftRearMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .rightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .rightRearMotorDirection(DcMotorSimple.Direction.REVERSE)
-            /*.xVelocity(velocity)
-            .yVelocity(velocity)*/
-
-
+            .leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .xVelocity(59.76299808532234)
+            .yVelocity(42.9145719272887385)
             ;
 
 
-    public static ThreeWheelConstants localizerConstants = new ThreeWheelConstants()
-            /*.forwardTicksToInches(multiplyer)
-            .strafeTicksToInches(multiplyer)
-            .turnTicksToInches(multiplyer)*/
-            //change for offset from center of robot to center of deadwheels
-            .leftPodY(1)
-            .rightPodY(-1)
-            .strafePodX(-2.5)//perpendicular deadwheel
-            //change to name of motor that plugged into same port as deadwheels
-            .leftEncoder_HardwareMapName("rb")
-            .rightEncoder_HardwareMapName("lb")
-            .strafeEncoder_HardwareMapName("rf")
-            .leftEncoderDirection(Encoder.FORWARD)
-            .rightEncoderDirection(Encoder.FORWARD)
-            .strafeEncoderDirection(Encoder.FORWARD)
-           /* .xVelocity()*/
 
-    ;
 
 
 
@@ -80,9 +60,20 @@ public class Constants {
 
     public static Follower createFollower(HardwareMap hardwareMap) {
         return new FollowerBuilder(followerConstants, hardwareMap)
-                .threeWheelLocalizer(localizerConstants)
+                .pinpointLocalizer(localizerConstants)
                 .pathConstraints(pathConstraints)
+
                 .mecanumDrivetrain(driveConstants)
                 .build();
     }
+
+
+    public static PinpointConstants localizerConstants = new PinpointConstants()
+            .forwardPodY(6.21875)
+            .strafePodX(-6.0625)
+            .distanceUnit(DistanceUnit.INCH)
+            .hardwareMapName("pinpoint")
+            .encoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD)
+            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED)
+            .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED);
 }

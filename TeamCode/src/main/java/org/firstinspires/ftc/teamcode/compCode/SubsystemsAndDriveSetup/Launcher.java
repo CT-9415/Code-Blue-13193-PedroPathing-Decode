@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode.compCode.SubsystemsAndDriveSetup;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import androidx.annotation.NonNull;
 
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -11,6 +14,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 public class Launcher {
     public DcMotorEx launcher;
+
 
     public void init(HardwareMap hardwareMap){
 
