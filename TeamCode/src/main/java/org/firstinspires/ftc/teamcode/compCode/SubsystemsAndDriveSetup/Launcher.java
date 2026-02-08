@@ -1,20 +1,22 @@
 package org.firstinspires.ftc.teamcode.compCode.SubsystemsAndDriveSetup;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+@Configurable
 
 public class Launcher extends SubsystemBase {
     private final DcMotorEx shooter;
-    private double GoonRate = 0;
+    private double goonRate = 0;
 
     // Tune these PID values for your motor
-    private static final double kP = 10.0;
-    private static final double kI = 3.0;
+    private static final double kP = 14.5;
+    private static final double kI = 2.0;
     private static final double kD = 0.0;
-    private static final double kF = 12.0;
+    private static final double kF = 12.3;
 
     public Launcher(HardwareMap hardwareMap) {
         shooter = hardwareMap.get(DcMotorEx.class, "launcher");
@@ -25,12 +27,12 @@ public class Launcher extends SubsystemBase {
     }
 
     public void setGoonRate(double velocity) {
-        GoonRate = velocity;
+        goonRate = velocity;
         shooter.setVelocity(velocity);
     }
 
     public double getGoonRate() {
-        return GoonRate;
+        return goonRate;
     }
 
     public double getVelocity() {
@@ -38,7 +40,7 @@ public class Launcher extends SubsystemBase {
     }
 
     public boolean isAtTarget(double tolerance) {
-        return Math.abs(getVelocity() - GoonRate) < tolerance;
+        return Math.abs(getVelocity() - goonRate) < tolerance;
     }
 
     public void goon(double velocity) {

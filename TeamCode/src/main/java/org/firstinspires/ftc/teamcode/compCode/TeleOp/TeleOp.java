@@ -21,7 +21,7 @@ public class TeleOp extends OpMode {
     private boolean firing = false;
 
     // Target velocity for the launcher (ticks/sec) — tune this
-    private static final double LAUNCH_VELOCITY = 1600;
+    private static final double LAUNCH_VELOCITY = 1800;
     // How long the loader runs to feed the ball (ms)
     private static final long LOAD_TIME_MS = 1000;
 
