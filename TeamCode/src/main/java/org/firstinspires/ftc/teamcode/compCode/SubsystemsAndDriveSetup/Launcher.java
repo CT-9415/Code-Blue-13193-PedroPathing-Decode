@@ -13,10 +13,17 @@ public class Launcher extends SubsystemBase {
     private double goonRate = 0;
 
     // Tune these PID values for your motor
-    private static final double kP = 14.5;
-    private static final double kI = 2.0;
-    private static final double kD = 0.0;
-    private static final double kF = 12.3;
+    private static final double kP = 10.0;
+    private static final double kI = 0.0;
+    private static final double kD = 1.5;
+    private static final double kF = 11.0;
+
+
+    //uncomment if tuning with panels
+    /*public static double kP = 10.0;
+    public static double kI = 0.0;
+    public static double kD = 1.5;
+    public static double kF = 11.0;*/
 
     public Launcher(HardwareMap hardwareMap) {
         shooter = hardwareMap.get(DcMotorEx.class, "launcher");
