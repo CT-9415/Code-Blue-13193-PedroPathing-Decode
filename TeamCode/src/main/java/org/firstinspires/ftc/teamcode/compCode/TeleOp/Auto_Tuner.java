@@ -184,18 +184,8 @@ public class Auto_Tuner extends OpMode {
 
         // Toggle loader on/off with Y
         if (currY && !lastY) {
-            // Since we don't have a direct "isRunning" check on the loader, we can use a flag or just toggle
-            // For simplicity, let's assume we want to hold Y to run, or toggle. 
-            // The user asked to "run the loader", usually for testing firing.
-            // Let's make it toggle like the shooter for consistency in this tuner.
-            // But wait, the loader subsystem doesn't have a toggle state getter.
-            // Let's use a local boolean flag for loader state.
+
         }
-        // Actually, let's implement the loader logic properly.
-        // We need a boolean to track loader state.
-        
-        // ... Wait, I can't easily insert a new field variable here via 'replace'.
-        // I will just make Y hold-to-run for simplicity and safety in a tuner.
         
         if (currY) {
             loader.on();
