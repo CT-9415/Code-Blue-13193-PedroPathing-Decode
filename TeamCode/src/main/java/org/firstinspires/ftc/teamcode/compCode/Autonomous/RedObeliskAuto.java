@@ -29,15 +29,16 @@ public class RedObeliskAuto extends OpMode {
     private Loader loader;
     private boolean fireFinished;
 
-    private static final double LAUNCH_VELOCITY = 8;
-    private static final long LOAD_TIME_MS = 1000;
+
+    private static final double LAUNCH_VELOCITY = 1800;
+    private static final long LOAD_TIME_MS = 2000;
 
     @Override
     public void init() {
         panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 
         follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(new Pose(72, 8, Math.toRadians(90)));
+        follower.setStartingPose(new Pose(127.5, 114.875, Math.toRadians(0)));
 
         launcher = new Launcher(hardwareMap);
         loader = new Loader(hardwareMap);
@@ -83,10 +84,10 @@ public class RedObeliskAuto extends OpMode {
         public Paths(Follower follower) {
             Path1 = follower.pathBuilder().addPath(
                             new BezierLine(
-                                    new Pose(123.538, 122.780),
+                                    new Pose(127.5, 114.875 ),
                                     new Pose(83.995, 83.067)
                             )
-                    ).setLinearHeadingInterpolation(Math.toRadians(37), Math.toRadians(45))
+                    ).setConstantHeadingInterpolation(Math.toRadians(45))
                     .build();
 
             Path2 = follower.pathBuilder().addPath(

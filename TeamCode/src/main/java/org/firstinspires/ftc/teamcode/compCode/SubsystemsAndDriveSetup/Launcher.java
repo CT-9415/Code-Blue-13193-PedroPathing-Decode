@@ -16,7 +16,7 @@ public class Launcher extends SubsystemBase {
     private static final double kP = 10.0;
     private static final double kI = 0.0;
     private static final double kD = 1.5;
-    private static final double kF = 11.0;
+    private static final double kF = 15.0;
 
 
     //uncomment if tuning with panels
