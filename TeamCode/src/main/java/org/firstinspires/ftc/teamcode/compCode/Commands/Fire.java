@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.compCode.Commands;
 
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.compCode.SubsystemsAndDriveSetup.Launcher;
 import org.firstinspires.ftc.teamcode.compCode.SubsystemsAndDriveSetup.Loader;
@@ -18,6 +19,8 @@ public class Fire extends SequentialCommandGroup {
     public Fire(Launcher launcher, Loader loader, double velocity, long loadTimeMs) {
         addCommands(
                 new SpinUpLauncher(launcher, velocity),
+
+
                 new RunLoader(loader, 1.0).withTimeout(loadTimeMs),
                 new StopLauncher(launcher)
         );
